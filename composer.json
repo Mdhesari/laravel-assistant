@@ -1,0 +1,57 @@
+{
+    "name": "mdhesari/laravel-assistant",
+    "description": "A smart laravel assistant which makes Laravel deveoper's life easier. just focus on the logic and leave the boilerplates on me.",
+    "keywords": [
+        "mdhesari",
+        "laravel-assistant"
+    ],
+    "homepage": "https://github.com/mdhesari/laravel-assistant",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Mohamad Hesari",
+            "email": "mdhesari99@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0|^8.1",
+        "illuminate/support": "^8.0|^9.0|^10.0"
+    },
+    "require-dev": {
+        "nunomaduro/collision": "^7.9",
+        "nunomaduro/larastan": "^2.0.1",
+        "orchestra/testbench": "^8.0",
+        "phpunit/phpunit": "^9.0",
+        "pestphp/pest": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mdhesari\\LaravelAssistant\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mdhesari\\LaravelAssistant\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mdhesari\\LaravelAssistant\\LaravelAssistantServiceProvider"
+            ],
+            "aliases": {
+                "LaravelAssistant": "Mdhesari\\LaravelAssistant\\LaravelAssistantFacade"
+            }
+        }
+    }
+}
