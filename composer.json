@@ -17,7 +17,9 @@
     ],
     "require": {
         "php": "^8.1",
-        "illuminate/support": "^10.0"
+        "illuminate/support": "^10.0",
+        "mdhesari/api-response": "^2.0",
+        "mdhesari/laravel-query-filters": "^2.0"
     },
     "require-dev": {
         "orchestra/testbench": "^8.0",
@@ -37,7 +39,6 @@
     "scripts": {
         "test": "vendor/bin/phpunit",
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
-
     },
     "config": {
         "sort-packages": true,

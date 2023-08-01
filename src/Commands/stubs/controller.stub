@@ -1,0 +1,96 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use App\Models\$MODEL$;
+use App\Http\Requests\$MODEL_REQUEST$;
+use App\Actions\Create$MODEL$;
+use App\Actions\Update$MODEL$;
+use Mdhesari\LaravelQueryFilters\Actions\ApplyQueryFilters;
+
+class $CLASS$ extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware([
+            //
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param ApplyQueryFilters $applyQueryFilters
+     * @return JsonResponse
+     * @LRDparam s string
+     * @LRDparam oldest boolean
+     * @LRDparam per_page integer
+     * @LRDparam user_id integer
+     * @LRDparam date_from integer
+     * @LRDparam date_to integer
+     */
+    public function index(Request $request, ApplyQueryFilters $applyQueryFilters): JsonResponse
+    {
+        $query = $applyQueryFilters($MODEL$::query(), $request->all());
+
+        return api()->success(null, [
+            'items' => $query->paginate(),
+        ]);
+    }
+
+    /**
+     * @param $MODEL_REQUEST$ $request
+     * @param Create$MODEL$ $create$MODEL$
+     * @return JsonResponse
+     */
+    public function store($MODEL_REQUEST$ $request, Create$MODEL$ $create$MODEL$): JsonResponse
+    {
+        $model = $create$MODEL$($request->validated());
+
+        return api()->success(null, [
+            'item' => $model,
+        ]);
+    }
+
+    /**
+     * @param $MODEL_REQUEST$ $request
+     * @param $MODEL$ $MODEL$
+     * @param Update$MODEL$ $updateRole
+     * @return JsonResponse
+     */
+    public function update($MODEL_REQUEST$ $request, $MODEL$ $model, Update$MODEL$ $update$MODEL$): JsonResponse
+    {
+        $model = $update$MODEL$($model, $request->validated());
+
+        return api()->success(null, [
+            'item' => $model,
+        ]);
+    }
+
+    /**
+     * @param $MODEL$ $model
+     * @return JsonResponse
+     */
+    public function show($MODEL$ $model): JsonResponse
+    {
+        return api()->success(null, [
+            'item' => $model,
+        ]);
+    }
+
+    /**
+     * @param $MODEL$ $model
+     * @param Delete$MODEL$ $delete$MODEL$
+     * @return JsonResponse
+     * @throws ValidationException
+     * @throws Throwable
+     */
+    public function destroy($MODEL$ $model, Delete$MODEL$ $delete$MODEL$): JsonResponse
+    {
+        $delete$MODEL$($model);
+
+        return api()->success();
+    }
+}

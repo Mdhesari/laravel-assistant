@@ -1,0 +1,18 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use App\Models\$MODEL$;
+use App\Events\$EVENT$;
+
+class $CLASS$
+{
+    public function __invoke(array $data)
+    {
+        $model = $MODEL$::create($data);
+
+        event(new $EVENT$($model));
+
+        return $model;
+    }
+}

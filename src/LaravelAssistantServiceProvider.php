@@ -3,6 +3,7 @@
 namespace Mdhesari\LaravelAssistant;
 
 use Illuminate\Support\ServiceProvider;
+use Mdhesari\LaravelAssistant\Commands\CrudGeneratorCommand;
 
 class LaravelAssistantServiceProvider extends ServiceProvider
 {
@@ -40,7 +41,9 @@ class LaravelAssistantServiceProvider extends ServiceProvider
             ], 'lang');*/
 
             // Registering package commands.
-            // $this->commands([]);
+            $this->commands([
+                CrudGeneratorCommand::class,
+            ]);
         }
     }
 
