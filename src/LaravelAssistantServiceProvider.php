@@ -5,6 +5,7 @@ namespace Mdhesari\LaravelAssistant;
 use Illuminate\Support\ServiceProvider;
 use Mdhesari\LaravelAssistant\Commands\CrudGeneratorCommand;
 use Mdhesari\LaravelAssistant\Commands\MakeControllerCommand;
+use Mdhesari\LaravelAssistant\Commands\MakeEventCommand;
 use Mdhesari\LaravelAssistant\Commands\MakeMigrationCommand;
 use Mdhesari\LaravelAssistant\Commands\MakeModelCommand;
 use Mdhesari\LaravelAssistant\Commands\MakeRequestCommand;
@@ -51,6 +52,7 @@ class LaravelAssistantServiceProvider extends ServiceProvider
                 MakeRequestCommand::class,
                 MakeControllerCommand::class,
                 MakeModelCommand::class,
+                MakeEventCommand::class,
             ]);
         }
     }

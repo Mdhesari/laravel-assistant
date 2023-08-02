@@ -2,6 +2,7 @@
 
 namespace Mdhesari\LaravelAssistant\Commands;
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -114,8 +115,15 @@ class CrudGeneratorCommand extends BaseGenerator
 
     private function createEvents()
     {
-        $this->createEvent('created');
-        $this->createEvent('updated');
+        Artisan::call('assistant:make-event', [
+            '--model' => $this->modelName,
+            'name'    => 'created',
+        ]);
+
+        Artisan::call('assistant:make-event', [
+            '--model' => $this->modelName,
+            'name'    => 'updated',
+        ]);
     }
 
     private function createAction(string $name)
@@ -136,29 +144,6 @@ class CrudGeneratorCommand extends BaseGenerator
             'NAMESPACE' => 'App\\Actions',
             'CLASS'     => $className,
             'EVENT'     => Str::of($name == 'create' ? 'Created' : 'Updated')->prepend($studlyModelName),
-            'MODEL'     => $studlyModelName,
-        ]);
-
-        $this->createFile($path, $contents);
-    }
-
-    private function createEvent(string $name)
-    {
-        $studlyModelName = Str::studly($this->modelName);
-
-        $name = Str::of($name);
-        $class = $name->studly()->prepend($studlyModelName);
-
-        $path = Str::of(app_path('Events'))
-            ->append('/')
-            ->append($class)
-            ->append('.php');
-
-        $path = $this->getCompletePath($path);
-
-        $contents = $this->getTemplateContents('/event.stub', [
-            'NAMESPACE' => 'App\\Events',
-            'CLASS'     => $class,
             'MODEL'     => $studlyModelName,
         ]);
 
