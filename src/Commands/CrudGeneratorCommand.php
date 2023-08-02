@@ -66,7 +66,9 @@ class CrudGeneratorCommand extends BaseGenerator
         }
 
         if ($this->option('controller')) {
-            $this->createController();
+            $this->call('assistant:make-controller', [
+                'model' => $this->modelName,
+            ]);
         }
 
         return 0;
@@ -114,28 +116,6 @@ class CrudGeneratorCommand extends BaseGenerator
     {
         $this->createEvent('created');
         $this->createEvent('updated');
-    }
-
-    private function createController()
-    {
-        $studlyModelName = Str::studly($this->modelName);
-
-        $path = Str::of(app_path('Http/Controllers/'))
-            ->append($studlyModelName)
-            ->append('Controller')
-            ->append('.php');
-
-        $path = $this->getCompletePath($path);
-
-        $contents = $this->getTemplateContents('/controller.stub', [
-            'CLASS_NAMESPACE' => 'App\\Http\\Controllers',
-            'CLASS'           => $studlyModelName.'Controller',
-            'MODEL'           => $studlyModelName,
-            'MODEL_REQUEST'   => $studlyModelName.'Request',
-        ]);
-
-
-        $this->createFile($path, $contents);
     }
 
     private function createAction(string $name)
