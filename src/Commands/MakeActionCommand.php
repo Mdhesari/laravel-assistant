@@ -43,7 +43,7 @@ class MakeActionCommand extends BaseGenerator
         $path = $this->getCompletePath($path);
 
         $contents = $this->getTemplateContents("/{$name}-action.stub", [
-            'NAMESPACE' => 'App\\Actions',
+            'NAMESPACE' => 'App\\Actions\\'.$studlyModelName,
             'CLASS'     => $className,
             'EVENT'     => Str::of($name == 'create' ? 'Created' : 'Updated')->prepend($studlyModelName),
             'MODEL'     => $studlyModelName,
