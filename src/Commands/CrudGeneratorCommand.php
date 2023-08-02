@@ -2,8 +2,6 @@
 
 namespace Mdhesari\LaravelAssistant\Commands;
 
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -24,18 +22,11 @@ class CrudGeneratorCommand extends BaseGenerator
     protected $description = 'Create CRUD for an entity.';
 
     /**
-     * The model name passed as an argument
-     *
-     * @var string
-     */
-    private string $modelName;
-
-    /**
      * Execute the console command.
      */
     public function handle(): int
     {
-        $this->modelName = $this->argument('model');
+        $modelName = $this->argument('model');
 
         if ($this->option('all')) {
             $this->input->setOption('migration', true);
@@ -44,31 +35,27 @@ class CrudGeneratorCommand extends BaseGenerator
             $this->input->setOption('model', true);
         }
 
-        $this->createEvents();
-
-        $this->createActions();
-
         if ($this->option('migration')) {
             $this->call('assistant:make-migration', [
-                'model' => $this->modelName,
+                'model' => $modelName,
             ]);
         }
 
         if ($this->option('requests')) {
             $this->call('assistant:make-request', [
-                'model' => $this->modelName,
+                'model' => $modelName,
             ]);
         }
 
         if ($this->option('model')) {
             $this->call('assistant:make-model', [
-                'model' => $this->modelName,
+                'model' => $modelName,
             ]);
         }
 
         if ($this->option('controller')) {
             $this->call('assistant:make-controller', [
-                'model' => $this->modelName,
+                'model' => $modelName,
             ]);
         }
 
@@ -104,49 +91,5 @@ class CrudGeneratorCommand extends BaseGenerator
             ['migration', 'm', InputOption::VALUE_NONE, 'Create a new migration file for the crud'],
             ['requests', 'R', InputOption::VALUE_NONE, 'Create new form request classes and use them in the resource controller'],
         ];
-    }
-
-    private function createActions()
-    {
-        $this->createAction('create');
-        $this->createAction('update');
-        $this->createAction('delete');
-    }
-
-    private function createEvents()
-    {
-        Artisan::call('assistant:make-event', [
-            '--model' => $this->modelName,
-            'name'    => 'created',
-        ]);
-
-        Artisan::call('assistant:make-event', [
-            '--model' => $this->modelName,
-            'name'    => 'updated',
-        ]);
-    }
-
-    private function createAction(string $name)
-    {
-        $studlyModelName = Str::studly($this->modelName);
-
-        $name = Str::of($name);
-        $className = $name->studly()->append($studlyModelName);
-
-        $path = Str::of(app_path('Actions/'.$studlyModelName.'/'))
-            ->append('/')
-            ->append($className)
-            ->append('.php');
-
-        $path = $this->getCompletePath($path);
-
-        $contents = $this->getTemplateContents("/{$name}-action.stub", [
-            'NAMESPACE' => 'App\\Actions',
-            'CLASS'     => $className,
-            'EVENT'     => Str::of($name == 'create' ? 'Created' : 'Updated')->prepend($studlyModelName),
-            'MODEL'     => $studlyModelName,
-        ]);
-
-        $this->createFile($path, $contents);
     }
 }

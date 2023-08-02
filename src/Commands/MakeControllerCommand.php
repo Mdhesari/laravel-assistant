@@ -22,11 +22,24 @@ class MakeControllerCommand extends BaseGenerator
     protected $description = 'Assistant scaffold a new request.';
 
     /**
+     * The model name.
+     *
+     * @var string
+     */
+    private string $modelName;
+
+    /**
      * Execute the console command.
      */
     public function handle()
     {
         $modelName = $this->argument('model');
+
+        $this->modelName = $modelName;
+
+        $this->makeEvents();
+
+        $this->makeActions();
 
         $studlyModelName = Str::studly($modelName);
 
@@ -60,5 +73,34 @@ class MakeControllerCommand extends BaseGenerator
         return [
             ['model', InputArgument::REQUIRED, 'Model name'],
         ];
+    }
+
+    private function makeActions()
+    {
+        $this->makeAction('create');
+        $this->makeAction('update');
+        $this->makeAction('delete');
+    }
+
+    private function makeEvents()
+    {
+        $this->makeEvent('created');
+        $this->makeEvent('updated');
+    }
+
+    private function makeAction(string $name)
+    {
+        $this->call('assistant:make-action', [
+            '--model' => $this->modelName,
+            'name'    => $name,
+        ]);
+    }
+
+    private function makeEvent(string $name)
+    {
+        $this->call('assistant:make-event', [
+            '--model' => $this->modelName,
+            'name'    => $name,
+        ]);
     }
 }
