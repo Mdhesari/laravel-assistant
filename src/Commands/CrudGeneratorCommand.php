@@ -2,16 +2,11 @@
 
 namespace Mdhesari\LaravelAssistant\Commands;
 
-use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use Mdhesari\LaravelAssistant\Exceptions\FileAlreadyExistException;
-use Mdhesari\LaravelAssistant\Generators\FileGenerator;
-use Mdhesari\LaravelAssistant\Support\Migrations\SchemaParser;
-use Mdhesari\LaravelAssistant\Support\Stub;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class CrudGeneratorCommand extends Command
+class CrudGeneratorCommand extends BaseGenerator
 {
     /**
      * The console command name.
@@ -53,11 +48,15 @@ class CrudGeneratorCommand extends Command
         $this->createActions();
 
         if ($this->option('migration')) {
-            $this->createMigration();
+            $this->call('assistant:make-migration', [
+                'model' => $this->modelName,
+            ]);
         }
 
         if ($this->option('requests')) {
-            $this->createRequests();
+            $this->call('assistant:make-request', [
+                'model' => $this->modelName,
+            ]);
         }
 
         if ($this->option('model')) {
@@ -68,44 +67,7 @@ class CrudGeneratorCommand extends Command
             $this->createController();
         }
 
-        // Ask AI for possible fields and data structure
-
-        // Add data to generated stubs & create files
-
         return 0;
-    }
-
-    /**
-     * Get controller name.
-     *
-     * @param $entity
-     * @return string
-     */
-    public function getDestinationFilePath(string $path): string
-    {
-        return str_replace('\\', '/', $path);
-    }
-
-    /**
-     * @return array|string
-     */
-    protected function getControllerName(string $entity)
-    {
-        $controller = Str::studly($entity);
-
-        if (Str::contains(strtolower($controller), 'controller') === false) {
-            $controller .= 'Controller';
-        }
-
-        return $controller;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getTemplateContents(string $name, array $replaces)
-    {
-        return (new Stub($name, $replaces))->render();
     }
 
     /**
@@ -139,31 +101,11 @@ class CrudGeneratorCommand extends Command
         ];
     }
 
-    private function createMigration()
-    {
-        $studlyModelName = Str::studly($this->modelName);
-
-        $path = Str::of(database_path('migrations/'))
-            ->append(date('Y_m_d_His_'))
-            ->append('create_')
-            ->append(Str::of($this->modelName)->lower()->plural())
-            ->append('_table')
-            ->append('.php');
-
-        $path = $this->getCompletePath($path);
-
-        $contents = $this->getTemplateContents('/migrations/create.stub', [
-            'TABLE'  => Str::of($studlyModelName)->lower()->plural(),
-            'FIELDS' => $this->getSchemaParser()->render(),
-        ]);
-
-        $this->createFile($path, $contents);
-    }
-
     private function createActions()
     {
         $this->createAction('create');
         $this->createAction('update');
+        $this->createAction('delete');
     }
 
     private function createEvents()
@@ -219,7 +161,7 @@ class CrudGeneratorCommand extends Command
         $name = Str::of($name);
         $className = $name->studly()->append($studlyModelName);
 
-        $path = Str::of(app_path('Actions'))
+        $path = Str::of(app_path('Actions/'.$studlyModelName.'/'))
             ->append('/')
             ->append($className)
             ->append('.php');
@@ -257,60 +199,5 @@ class CrudGeneratorCommand extends Command
         ]);
 
         $this->createFile($path, $contents);
-    }
-
-    private function createRequests()
-    {
-        $studlyModelName = Str::studly($this->modelName);
-
-        $path = Str::of(app_path('Http/Requests/'))
-            ->append($studlyModelName)
-            ->append('Request')
-            ->append('.php');
-
-        $path = $this->getCompletePath($path);
-
-        $contents = $this->getTemplateContents('/request.stub', [
-            'CLASS_NAMESPACE' => 'App\\Http\\Requests',
-            'CLASS'           => $studlyModelName.'Request',
-        ]);
-
-        $this->createFile($path, $contents);
-    }
-
-    private function createFile(string $path, string $contents): void
-    {
-        try {
-            $this->components->task("Generating file {$path}", function () use ($path, $contents) {
-                $overwriteFile = $this->hasOption('force') ? $this->option('force') : false;
-                (new FileGenerator($path, $contents))->withFileOverwrite($overwriteFile)->generate();
-            });
-
-        } catch (FileAlreadyExistException $e) {
-            $this->components->error("File : {$path} already exists.");
-
-            return;
-        }
-    }
-
-    private function getCompletePath(string $path): string
-    {
-        $path = $this->getDestinationFilePath($path);
-
-        if (! $this->laravel['files']->isDirectory($dir = dirname($path))) {
-            $this->laravel['files']->makeDirectory($dir, 0777, true);
-        }
-
-        return $path;
-    }
-
-    /**
-     * Get schema parser.
-     *
-     * @return SchemaParser
-     */
-    public function getSchemaParser()
-    {
-        return new SchemaParser($this->option('fields'));
     }
 }

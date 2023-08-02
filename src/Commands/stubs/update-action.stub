@@ -7,9 +7,9 @@ use App\Events\$EVENT$;
 
 class $CLASS$
 {
-    public function __invoke(array $data)
+    public function __invoke($MODEL$ $model ,array $data)
     {
-        $MODEL$::update($data);
+        $model->update($data);
 
         event(new $EVENT$($model));
 

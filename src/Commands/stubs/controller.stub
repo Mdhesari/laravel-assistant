@@ -2,6 +2,7 @@
 
 namespace $CLASS_NAMESPACE$;
 
+use Throwable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -9,6 +10,7 @@ use App\Models\$MODEL$;
 use App\Http\Requests\$MODEL_REQUEST$;
 use App\Actions\Create$MODEL$;
 use App\Actions\Update$MODEL$;
+use App\Actions\Delete$MODEL$;
 use Mdhesari\LaravelQueryFilters\Actions\ApplyQueryFilters;
 
 class $CLASS$ extends Controller
@@ -82,9 +84,8 @@ class $CLASS$ extends Controller
 
     /**
      * @param $MODEL$ $model
-     * @param Delete$MODEL$ $delete$MODEL$
+     * @param Delete$MODEL$ $deleteProduct
      * @return JsonResponse
-     * @throws ValidationException
      * @throws Throwable
      */
     public function destroy($MODEL$ $model, Delete$MODEL$ $delete$MODEL$): JsonResponse
