@@ -84,10 +84,10 @@ class CrudGeneratorCommand extends BaseGenerator
     {
         return [
             ['all', 'a', InputOption::VALUE_NONE, 'Generate a migration, model, controller, and form request classes for the crud'],
-            ['fields', null, InputOption::VALUE_OPTIONAL, 'The specified fields table.', null],
+            ['fields', 'fs', InputOption::VALUE_OPTIONAL, 'The specified fields table.', null],
             ['controller', 'c', InputOption::VALUE_NONE, 'Create a new controller for the crud'],
             ['model', 'mo', InputOption::VALUE_NONE, 'Create a new model for the crud'],
-            ['force', null, InputOption::VALUE_NONE, 'Create the class even if the crud already exists'],
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the crud already exists'],
             ['migration', 'm', InputOption::VALUE_NONE, 'Create a new migration file for the crud'],
             ['requests', 'R', InputOption::VALUE_NONE, 'Create new form request classes and use them in the resource controller'],
         ];
