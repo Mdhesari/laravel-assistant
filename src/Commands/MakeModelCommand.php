@@ -28,17 +28,15 @@ class MakeModelCommand extends BaseGenerator
     {
         $modelName = $this->argument('model');
 
-        $studlyModelName = Str::studly($modelName);
-
         $path = Str::of(app_path('Models/'))
-            ->append($studlyModelName)
+            ->append($modelName)
             ->append('.php');
 
         $path = $this->getCompletePath($path);
 
         $contents = $this->getTemplateContents('/model.stub', [
-            'CLASS_NAMESPACE' => 'App\\Models',
-            'CLASS'           => $studlyModelName,
+            'NAMESPACE' => 'App\\Models',
+            'CLASS'           => $modelName,
         ]);
 
         $this->createFile($path, $contents);

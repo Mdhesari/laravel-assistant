@@ -41,20 +41,18 @@ class MakeControllerCommand extends BaseGenerator
 
         $this->makeActions();
 
-        $studlyModelName = Str::studly($modelName);
-
         $path = Str::of(app_path('Http/Controllers/'))
-            ->append($studlyModelName)
+            ->append($modelName)
             ->append('Controller')
             ->append('.php');
 
         $path = $this->getCompletePath($path);
 
         $contents = $this->getTemplateContents('/controller.stub', [
-            'CLASS_NAMESPACE' => 'App\\Http\\Controllers',
-            'CLASS'           => $studlyModelName.'Controller',
-            'MODEL'           => $studlyModelName,
-            'MODEL_REQUEST'   => $studlyModelName.'Request',
+            'NAMESPACE' => 'App\\Http\\Controllers',
+            'CLASS'           => $modelName.'Controller',
+            'MODEL'           => $modelName,
+            'MODEL_REQUEST'   => $modelName.'Request',
         ]);
 
 

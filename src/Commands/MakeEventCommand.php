@@ -30,10 +30,8 @@ class MakeEventCommand extends BaseGenerator
         $name = $this->argument('name');
         $modelName = $this->option('model');
 
-        $studlyModelName = Str::studly($modelName);
-
         $name = Str::of($name);
-        $class = $name->studly()->prepend($studlyModelName);
+        $class = $name->studly()->prepend($modelName);
 
         $path = Str::of(app_path('Events'))
             ->append('/')
@@ -45,7 +43,7 @@ class MakeEventCommand extends BaseGenerator
         $contents = $this->getTemplateContents('/event.stub', [
             'NAMESPACE' => 'App\\Events',
             'CLASS'     => $class,
-            'MODEL'     => $studlyModelName,
+            'MODEL'     => $modelName,
         ]);
 
         $this->createFile($path, $contents);

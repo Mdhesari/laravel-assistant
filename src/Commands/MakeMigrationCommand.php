@@ -29,8 +29,6 @@ class MakeMigrationCommand extends BaseGenerator
     {
         $modelName = $this->argument('model');
 
-        $studlyModelName = Str::studly($modelName);
-
         $path = Str::of(database_path('migrations/'))
             ->append(date('Y_m_d_His_'))
             ->append('create_')
@@ -41,7 +39,7 @@ class MakeMigrationCommand extends BaseGenerator
         $path = $this->getCompletePath($path);
 
         $contents = $this->getTemplateContents('/migrations/create.stub', [
-            'TABLE'  => Str::of($studlyModelName)->lower()->plural(),
+            'TABLE'  => Str::of($modelName)->lower()->plural(),
             'FIELDS' => $this->getSchemaParser($this->option('fields') ?: '')->render(),
         ]);
 

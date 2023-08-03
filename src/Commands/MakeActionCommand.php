@@ -30,12 +30,10 @@ class MakeActionCommand extends BaseGenerator
         $name = $this->argument('name');
         $modelName = $this->option('model');
 
-        $studlyModelName = Str::studly($modelName);
-
         $name = Str::of($name);
-        $className = $name->studly()->append($studlyModelName);
+        $className = $name->studly()->append($modelName);
 
-        $path = Str::of(app_path('Actions/'.$studlyModelName.'/'))
+        $path = Str::of(app_path('Actions/'.$modelName.'/'))
             ->append('/')
             ->append($className)
             ->append('.php');
@@ -43,10 +41,10 @@ class MakeActionCommand extends BaseGenerator
         $path = $this->getCompletePath($path);
 
         $contents = $this->getTemplateContents("/{$name}-action.stub", [
-            'NAMESPACE' => 'App\\Actions\\'.$studlyModelName,
+            'NAMESPACE' => 'App\\Actions\\'.$modelName,
             'CLASS'     => $className,
-            'EVENT'     => Str::of($name == 'create' ? 'Created' : 'Updated')->prepend($studlyModelName),
-            'MODEL'     => $studlyModelName,
+            'EVENT'     => Str::of($name == 'create' ? 'Created' : 'Updated')->prepend($modelName),
+            'MODEL'     => $modelName,
         ]);
 
         $this->createFile($path, $contents);

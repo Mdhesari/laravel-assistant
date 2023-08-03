@@ -4,7 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/mdhesari/laravel-assistant.svg?style=flat-square)](https://packagist.org/packages/mdhesari/laravel-assistant)
 ![GitHub Actions](https://github.com/mdhesari/laravel-assistant/actions/workflows/main.yml/badge.svg)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+Larave assistant is a smart assistant tool for developers in order to develop and implement robust api for their client.
 
 ## Installation
 
@@ -16,8 +16,10 @@ composer require mdhesari/laravel-assistant
 
 ## Usage
 
-```php
-// Usage description here
+The magical command assistant:crud uses base architecture for scaffolding model, controller, migration, request architecture, and also it creates some events and actions in order to integrate them together.
+
+```shell
+php artisan assistant:crud -a
 ```
 
 ### Testing
