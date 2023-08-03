@@ -28,7 +28,7 @@ class MakeRequestCommand extends BaseGenerator
     {
         $modelName = $this->argument('model');
 
-        $path = Str::of(app_path('Http/Requests/'))
+        $path = Str::of(app_path('Http/Requests/'.$modelName.'/'))
             ->append($modelName)
             ->append('Request')
             ->append('.php');
@@ -37,7 +37,7 @@ class MakeRequestCommand extends BaseGenerator
 
         $contents = $this->getTemplateContents('/request.stub', [
             'NAMESPACE' => 'App\\Http\\Requests',
-            'CLASS'           => $modelName.'Request',
+            'CLASS'     => $modelName.'Request',
         ]);
 
         $this->createFile($path, $contents);

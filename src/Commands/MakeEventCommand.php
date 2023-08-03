@@ -33,8 +33,7 @@ class MakeEventCommand extends BaseGenerator
         $name = Str::of($name);
         $class = $name->studly()->prepend($modelName);
 
-        $path = Str::of(app_path('Events'))
-            ->append('/')
+        $path = Str::of(app_path('Events/'.$modelName.'/'))
             ->append($class)
             ->append('.php');
 
