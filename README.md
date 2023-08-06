@@ -11,7 +11,7 @@ Larave assistant is a smart assistant tool for developers in order to develop an
 You can install the package via composer:
 
 ```bash
-composer require mdhesari/laravel-assistant
+composer require mdhesari/laravel-assistant --dev
 ```
 
 ## Usage
