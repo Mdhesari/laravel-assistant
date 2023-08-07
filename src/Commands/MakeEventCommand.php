@@ -40,7 +40,7 @@ class MakeEventCommand extends BaseGenerator
         $path = $this->getCompletePath($path);
 
         $contents = $this->getTemplateContents('/event.stub', [
-            'NAMESPACE' => 'App\\Events',
+            'NAMESPACE' => 'App\\Events\\'.$modelName,
             'CLASS'     => $class,
             'MODEL'     => $modelName,
         ]);

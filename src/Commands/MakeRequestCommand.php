@@ -38,7 +38,7 @@ class MakeRequestCommand extends BaseGenerator
         $path = $this->getCompletePath($path);
 
         $contents = $this->getTemplateContents('/request.stub', [
-            'NAMESPACE' => 'App\\Http\\'.$modelName.'\\Requests',
+            'NAMESPACE' => 'App\\Http\\Requests\\'.$modelName,
             'CLASS'     => $modelName.'Request',
             'RULES'     => $fields,
         ]);
