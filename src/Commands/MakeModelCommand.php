@@ -4,6 +4,7 @@ namespace Mdhesari\LaravelAssistant\Commands;
 
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class MakeModelCommand extends BaseGenerator
 {
@@ -27,6 +28,7 @@ class MakeModelCommand extends BaseGenerator
     public function handle()
     {
         $modelName = $this->argument('model');
+        $fillable = $this->getFillable();
 
         $path = Str::of(app_path('Models/'))
             ->append($modelName)
@@ -36,10 +38,23 @@ class MakeModelCommand extends BaseGenerator
 
         $contents = $this->getTemplateContents('/model.stub', [
             'NAMESPACE' => 'App\\Models',
-            'CLASS'           => $modelName,
+            'CLASS'     => $modelName,
+            'FILLABLE'  => $fillable,
         ]);
 
         $this->createFile($path, $contents);
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['fields', null, InputOption::VALUE_OPTIONAL, 'The specified fields table.', null],
+        ];
     }
 
     /**
@@ -52,5 +67,21 @@ class MakeModelCommand extends BaseGenerator
         return [
             ['model', InputArgument::REQUIRED, 'Model name'],
         ];
+    }
+
+    private function getFillable()
+    {
+        $fields = $this->getFields();
+
+        $fields = explode(',', $fields);
+
+        $fillable = '';
+
+        foreach ($fields as $field) {
+            $field = explode(':', $field)[0];
+            $fillable .= "\t\t'".trim($field)."',".PHP_EOL;
+        }
+
+        return Str::replaceLast(PHP_EOL, '', $fillable);
     }
 }

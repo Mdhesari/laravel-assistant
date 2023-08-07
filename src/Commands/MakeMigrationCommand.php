@@ -40,7 +40,7 @@ class MakeMigrationCommand extends BaseGenerator
 
         $contents = $this->getTemplateContents('/migrations/create.stub', [
             'TABLE'  => Str::of($modelName)->lower()->plural(),
-            'FIELDS' => $this->getSchemaParser($this->option('fields') ?: '')->render(),
+            'FIELDS' => $this->getSchemaParser($this->getFields())->render(),
         ]);
 
         $this->createFile($path, $contents);

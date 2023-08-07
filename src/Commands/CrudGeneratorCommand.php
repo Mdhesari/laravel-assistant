@@ -27,6 +27,7 @@ class CrudGeneratorCommand extends BaseGenerator
     public function handle(): int
     {
         $modelName = $this->argument('model');
+        $fields = $this->getFields();
 
         if ($this->option('all')) {
             $this->input->setOption('migration', true);
@@ -37,19 +38,22 @@ class CrudGeneratorCommand extends BaseGenerator
 
         if ($this->option('migration')) {
             $this->call('assistant:make-migration', [
-                'model' => $modelName,
+                'model'    => $modelName,
+                '--fields' => $fields,
             ]);
         }
 
         if ($this->option('requests')) {
             $this->call('assistant:make-request', [
-                'model' => $modelName,
+                'model'    => $modelName,
+                '--fields' => $fields,
             ]);
         }
 
         if ($this->option('model')) {
             $this->call('assistant:make-model', [
-                'model' => $modelName,
+                'model'    => $modelName,
+                '--fields' => $fields,
             ]);
         }
 

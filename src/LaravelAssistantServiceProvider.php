@@ -10,6 +10,7 @@ use Mdhesari\LaravelAssistant\Commands\MakeEventCommand;
 use Mdhesari\LaravelAssistant\Commands\MakeMigrationCommand;
 use Mdhesari\LaravelAssistant\Commands\MakeModelCommand;
 use Mdhesari\LaravelAssistant\Commands\MakeRequestCommand;
+use Orhanerday\OpenAi\OpenAi;
 
 class LaravelAssistantServiceProvider extends ServiceProvider
 {
@@ -70,6 +71,10 @@ class LaravelAssistantServiceProvider extends ServiceProvider
         // Register the main class to use with the facade
         $this->app->singleton('laravel-assistant', function () {
             return new LaravelAssistant;
+        });
+
+        $this->app->singleton('ai', function () {
+            return new OpenAi(config('laravel-assistant.openAiApiKey'));
         });
     }
 }

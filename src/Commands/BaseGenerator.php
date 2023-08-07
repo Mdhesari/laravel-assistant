@@ -5,6 +5,7 @@ namespace Mdhesari\LaravelAssistant\Commands;
 use Illuminate\Console\Command;
 use Mdhesari\LaravelAssistant\Exceptions\FileAlreadyExistException;
 use Mdhesari\LaravelAssistant\Generators\FileGenerator;
+use Mdhesari\LaravelAssistant\LaravelAssistant;
 use Mdhesari\LaravelAssistant\Support\Migrations\SchemaParser;
 use Mdhesari\LaravelAssistant\Support\Stub;
 
@@ -71,8 +72,44 @@ abstract class BaseGenerator extends Command
      * @param array $fields
      * @return SchemaParser
      */
-    public function getSchemaParser(string $fields = ''): SchemaParser
+    public function getSchemaParser(?string $fields = null): SchemaParser
     {
         return new SchemaParser($fields);
+    }
+
+    protected function getFields()
+    {
+        $fields = $this->option('fields') ?: null;
+
+        is_null($fields) && $fields = $this->guessFields($this->argument('model'));
+
+        return $fields;
+    }
+
+    protected function guessFields(string $model)
+    {
+        $response = $this->assistant()->chat([
+            'messages' => [
+                [
+                    "role"    => "user",
+                    "content" => "please give me fields for designing user laravel database"
+                ],
+                [
+                    "role"    => "assistant",
+                    "content" => 'first_name:string:nullable,last_name:string:nullable,email:string:unique,password:string:nullable,address:string',
+                ],
+                [
+                    "role"    => "user",
+                    "content" => "please give me fields for designing ${model} laravel database"
+                ],
+            ],
+        ]);
+
+        return $response['choices'][0]['message']['content'] ?? '';
+    }
+
+    protected function assistant()
+    {
+        return app(LaravelAssistant::class);
     }
 }
