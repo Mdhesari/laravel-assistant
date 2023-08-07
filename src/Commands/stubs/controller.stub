@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Models\$MODEL$;
-use App\Http\Requests\$MODEL_REQUEST$;
+use App\Http\Requests\$MODEL$\$MODEL_REQUEST$;
 use App\Actions\$MODEL$\Create$MODEL$;
 use App\Actions\$MODEL$\Update$MODEL$;
 use App\Actions\$MODEL$\Delete$MODEL$;
