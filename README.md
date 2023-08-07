@@ -1,4 +1,4 @@
-# Very short description of the package
+# Laravel Assistant
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/mdhesari/laravel-assistant.svg?style=flat-square)](https://packagist.org/packages/mdhesari/laravel-assistant)
 [![Total Downloads](https://img.shields.io/packagist/dt/mdhesari/laravel-assistant.svg?style=flat-square)](https://packagist.org/packages/mdhesari/laravel-assistant)
@@ -11,7 +11,7 @@ Larave assistant is a smart assistant tool for developers in order to develop an
 You can install the package via composer:
 
 ```bash
-composer require mdhesari/laravel-assistant
+composer require mdhesari/laravel-assistant --dev
 ```
 
 ## Usage
