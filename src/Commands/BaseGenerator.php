@@ -92,11 +92,19 @@ abstract class BaseGenerator extends Command
             'messages' => [
                 [
                     "role"    => "user",
-                    "content" => "please give me fields for designing user laravel database"
+                    "content" => "please give me fields for designing users laravel database"
                 ],
                 [
                     "role"    => "assistant",
                     "content" => 'first_name:string:nullable,last_name:string:nullable,email:string:unique,password:string:nullable,address:string',
+                ],
+                [
+                    "role"    => "user",
+                    "content" => "please give me fields for designing posts laravel database"
+                ],
+                [
+                    "role"    => "assistant",
+                    "content" => 'title:string:nullable,body:string:nullable,author_id:foreignId:nullable,meta:json:nullable,reading_time:string,nullable',
                 ],
                 [
                     "role"    => "user",
