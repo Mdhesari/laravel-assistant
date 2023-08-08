@@ -58,7 +58,7 @@ class $CLASS$ extends Controller
 
     /**
      * @param $MODEL_REQUEST$ $request
-     * @param $MODEL$ $MODEL$
+     * @param $MODEL$ $model
      * @param Update$MODEL$ $updateRole
      * @return JsonResponse
      */
