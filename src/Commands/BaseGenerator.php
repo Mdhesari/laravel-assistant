@@ -14,7 +14,7 @@ abstract class BaseGenerator extends Command
     /**
      * Get controller name.
      *
-     * @param $entity
+     * @param string $path
      * @return string
      */
     protected function getDestinationFilePath(string $path): string
