@@ -84,7 +84,7 @@ class $CLASS$ extends Controller
 
     /**
      * @param $MODEL$ $model
-     * @param Delete$MODEL$ $deleteProduct
+     * @param Delete$MODEL$ $delete$MODEL$
      * @return JsonResponse
      * @throws Throwable
      */

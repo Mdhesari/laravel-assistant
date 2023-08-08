@@ -88,6 +88,14 @@ class MakeRequestCommand extends BaseGenerator
                 ],
                 [
                     "role"    => "user",
+                    "content" => "I have this laravel database scheme : street:string, city:string. state:string, zip:string:nullable, country:string:nullable, user_id:foreignId:nullable. please give me the laravel validation rules"
+                ],
+                [
+                    "role"    => "assistant",
+                    "content" => '{"street":"required|string", "city" :"required|string", "state" : "required|string", "zip" : "nullable|string", "country": "nullable|string|min:2", "user_id" : "nullable|exists:users,id}',
+                ],
+                [
+                    "role"    => "user",
                     "content" => "I have this laravel database scheme : first_name:string, email:string. please give me the laravel validation rules"
                 ],
                 [
