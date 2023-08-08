@@ -19,10 +19,10 @@
         "php": "^8.1",
         "illuminate/support": "^10.0",
         "mdhesari/api-response": "^2.0",
-        "mdhesari/laravel-query-filters": "^2.0"
+        "mdhesari/laravel-query-filters": "^2.0",
+        "orhanerday/open-ai": "^4.8"
     },
     "require-dev": {
-        "orhanerday/open-ai": "^4.8",
         "laravel/prompts": "^0.1.3",
         "orchestra/testbench": "^8.0",
         "phpunit/phpunit": "^10.0",
