@@ -31,7 +31,7 @@ class InstallCommand extends Command
         };
 
         if ($this->confirm(question: 'would you install the dependencies? (if not do it manually later)', default: false)) {
-            exec('composer require mdhesari/api-response mdhesari/laravel-query-filter');
+            exec('composer require mdhesari/api-response mdhesari/laravel-query-filters');
         }
 
         return 0;

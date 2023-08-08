@@ -15,6 +15,10 @@ composer require mdhesari/laravel-assistant --dev
 
 ## Usage
 
+```shell
+php artisan assistant:install
+```
+
 This package was created when I wanted to have a tool in order to scaffold my new modules in a second with my architecture and design concepts.
 
 It's currently best fit for api design, for example I want to develop a Todo app.
@@ -27,8 +31,28 @@ OPENAI_API_KEY="YOUR_API_KEY"
 
 The magical command assistant:crud uses base architecture for scaffolding model, controller, migration, request architecture, and also it creates some events and actions in order to integrate them together.
 
+* Crud scaffolding
+
 ```shell
 php artisan assistant:crud -a Task
+```
+
+* Migration
+
+```shell
+php artisan assistant:make-migration Task
+```
+
+* Model
+
+```shell
+php artisan assistant:make-model Task
+```
+
+* Request
+
+```shell
+php artisan assistant:make-request Task
 ```
 
 ### Testing
