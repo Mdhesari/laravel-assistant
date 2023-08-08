@@ -2,7 +2,6 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/mdhesari/laravel-assistant.svg?style=flat-square)](https://packagist.org/packages/mdhesari/laravel-assistant)
 [![Total Downloads](https://img.shields.io/packagist/dt/mdhesari/laravel-assistant.svg?style=flat-square)](https://packagist.org/packages/mdhesari/laravel-assistant)
-![GitHub Actions](https://github.com/mdhesari/laravel-assistant/actions/workflows/main.yml/badge.svg)
 
 Larave assistant is a smart assistant tool for developers in order to develop and implement robust api for their client.
 
@@ -16,10 +15,20 @@ composer require mdhesari/laravel-assistant --dev
 
 ## Usage
 
+This package was created when I wanted to have a tool in order to scaffold my new modules in a second with my architecture and design concepts.
+
+It's currently best fit for api design, for example I want to develop a Todo app.
+
+before everything don't forget to add OPENAI_API_KEY in your .env.
+
+```dotenv
+OPENAI_API_KEY="YOUR_API_KEY"
+```
+
 The magical command assistant:crud uses base architecture for scaffolding model, controller, migration, request architecture, and also it creates some events and actions in order to integrate them together.
 
 ```shell
-php artisan assistant:crud -a
+php artisan assistant:crud -a Task
 ```
 
 ### Testing
