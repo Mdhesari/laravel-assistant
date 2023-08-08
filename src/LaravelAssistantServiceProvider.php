@@ -4,7 +4,7 @@ namespace Mdhesari\LaravelAssistant;
 
 use Illuminate\Support\ServiceProvider;
 use Mdhesari\LaravelAssistant\Commands\CrudGeneratorCommand;
-use Mdhesari\LaravelAssistant\Commands\MakeActionCommand;
+use Mdhesari\LaravelAssistant\Commands\InstallCommand;
 use Mdhesari\LaravelAssistant\Commands\MakeControllerCommand;
 use Mdhesari\LaravelAssistant\Commands\MakeEventCommand;
 use Mdhesari\LaravelAssistant\Commands\MakeMigrationCommand;
@@ -55,7 +55,7 @@ class LaravelAssistantServiceProvider extends ServiceProvider
                 MakeControllerCommand::class,
                 MakeModelCommand::class,
                 MakeEventCommand::class,
-                MakeActionCommand::class,
+                InstallCommand::class,
             ]);
         }
     }
@@ -74,7 +74,7 @@ class LaravelAssistantServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('ai', function () {
-            return new OpenAi(config('laravel-assistant.openAiApiKey'));
+            return new OpenAi(config('laravel-assistant.openapi_api_key'));
         });
     }
 }

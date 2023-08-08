@@ -4,5 +4,5 @@
  * You can place your custom package configuration in here.
  */
 return [
-    'openAiApiKey' => env('OPENAI_API_KEY'),
+    'openapi_api_key' => env('OPENAI_API_KEY'),
 ];
