@@ -49,10 +49,12 @@ class MakeControllerCommand extends BaseGenerator
         $path = $this->getCompletePath($path);
 
         $contents = $this->getTemplateContents('/controller.stub', [
-            'NAMESPACE' => 'App\\Http\\Controllers',
-            'CLASS'           => $modelName.'Controller',
-            'MODEL'           => $modelName,
-            'MODEL_REQUEST'   => $modelName.'Request',
+            'NAMESPACE'           => 'App\\Http\\Controllers',
+            'CLASS'               => $modelName.'Controller',
+            'MODEL'               => $modelName,
+            'MODEL_REQUEST'       => $request = $modelName.'Request',
+            'MODEL_REQUEST_CLASS' => "App\\Http\\Requests\\{$modelName}\\{$request}",
+            'MODEL_CLASS'         => 'App\\Models\\'.$modelName,
         ]);
 
 
