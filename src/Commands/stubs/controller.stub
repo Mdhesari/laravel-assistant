@@ -52,7 +52,7 @@ class $CLASS$ extends Controller
         $model = $create$MODEL$($request->validated());
 
         return api()->success(null, [
-            'item' => $model,
+            'item' => $MODEL$::find($model->id),
         ]);
     }
 
@@ -64,10 +64,10 @@ class $CLASS$ extends Controller
      */
     public function update($MODEL_REQUEST$ $request, $MODEL$ $model, Update$MODEL$ $update$MODEL$): JsonResponse
     {
-        $model = $update$MODEL$($model, $request->validated());
+        $update$MODEL$($model, $request->validated());
 
         return api()->success(null, [
-            'item' => $model,
+            'item' => $MODEL$::find($model->id),
         ]);
     }
 
@@ -78,7 +78,7 @@ class $CLASS$ extends Controller
     public function show($MODEL$ $model): JsonResponse
     {
         return api()->success(null, [
-            'item' => $model,
+            'item' => $MODEL$::find($model->id),
         ]);
     }
 
