@@ -34,6 +34,8 @@ class InstallCommand extends Command
             exec('composer require mdhesari/api-response mdhesari/laravel-query-filters');
         }
 
+        $this->info('Installation complete.');
+
         return 0;
     }
 }
