@@ -2,8 +2,8 @@
 
 namespace $NAMESPACE$;
 
-use App\Models\$MODEL$;
-use App\Events\$EVENT$;
+use $MODEL_CLASS$;
+use $EVENT_CLASS$;
 
 class $CLASS$
 {
