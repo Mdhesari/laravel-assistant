@@ -59,7 +59,7 @@ class $CLASS$ extends Controller
     /**
      * @param $MODEL_REQUEST$ $request
      * @param $MODEL$ $model
-     * @param Update$MODEL$ $updateRole
+     * @param Update$MODEL$ $update$MODEL$
      * @return JsonResponse
      */
     public function update($MODEL_REQUEST$ $request, $MODEL$ $model, Update$MODEL$ $update$MODEL$): JsonResponse
