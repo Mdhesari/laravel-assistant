@@ -4,6 +4,7 @@ namespace Mdhesari\LaravelAssistant\Commands;
 
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class MakeControllerCommand extends BaseGenerator
 {
@@ -41,7 +42,12 @@ class MakeControllerCommand extends BaseGenerator
 
         $this->makeActions();
 
-        $path = Str::of(app_path('Http/Controllers/'))
+        if ($this->option('modules') && function_exists('module_path'))
+            $path = Str::of(module_path($modelName).'/');
+        else
+            $path = Str::of(app_path('/'));
+
+        $path = $path->append('Http/Controllers/')
             ->append($modelName)
             ->append('Controller')
             ->append('.php');
@@ -75,6 +81,18 @@ class MakeControllerCommand extends BaseGenerator
         ];
     }
 
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['modules', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
+        ];
+    }
+
     private function makeActions()
     {
         $this->makeAction('create');
@@ -91,16 +109,18 @@ class MakeControllerCommand extends BaseGenerator
     private function makeAction(string $name)
     {
         $this->call('assistant:make-action', [
-            '--model' => $this->modelName,
-            'name'    => $name,
+            '--model'   => $this->modelName,
+            '--modules' => $this->option('modules'),
+            'name'      => $name,
         ]);
     }
 
     private function makeEvent(string $name)
     {
         $this->call('assistant:make-event', [
-            '--model' => $this->modelName,
-            'name'    => $name,
+            '--model'   => $this->modelName,
+            '--modules' => $this->option('modules'),
+            'name'      => $name,
         ]);
     }
 }
