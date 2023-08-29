@@ -19,7 +19,7 @@
         "php": "^8.1",
         "illuminate/support": "^10.0",
         "mdhesari/api-response": "^2.0",
-        "mdhesari/laravel-query-filters": "^2.0",
+        "mdhesari/laravel-query-filters": "^2.0|^3.0",
         "orhanerday/open-ai": "^4.8"
     },
     "require-dev": {
