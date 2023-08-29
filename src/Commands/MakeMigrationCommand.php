@@ -54,6 +54,18 @@ class MakeMigrationCommand extends BaseGenerator
     }
 
     /**
+     * Get the console command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments()
+    {
+        return [
+            ['model', InputArgument::REQUIRED, 'Model name'],
+        ];
+    }
+
+    /**
      * Get the console command options.
      *
      * @return array
@@ -63,18 +75,6 @@ class MakeMigrationCommand extends BaseGenerator
         return [
             ['fields', null, InputOption::VALUE_OPTIONAL, 'The specified fields table.', null],
             ['modules', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
-        ];
-    }
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['model', InputArgument::REQUIRED, 'Model name'],
         ];
     }
 }
