@@ -30,31 +30,26 @@ class MakeModelCommand extends BaseGenerator
         $modelName = $this->argument('model');
         $fillable = $this->getFillable();
 
-        $path = Str::of(app_path('Models/'))
-            ->append($modelName)
+        if (($module = $this->option('module')) && function_exists('module_path')) {
+            $path = Str::of(module_path($module).'/Entities/');
+            $namespace = "Modules\\{$module}\\Entities";
+        } else {
+            $path = Str::of(app_path('Models/'));
+            $namespace = 'App\\Models';
+        }
+
+        $path = $path->append($modelName)
             ->append('.php');
 
         $path = $this->getCompletePath($path);
 
         $contents = $this->getTemplateContents('/model.stub', [
-            'NAMESPACE' => 'App\\Models',
+            'NAMESPACE' => $namespace,
             'CLASS'     => $modelName,
             'FILLABLE'  => $fillable,
         ]);
 
         $this->createFile($path, $contents);
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    protected function getOptions()
-    {
-        return [
-            ['fields', null, InputOption::VALUE_OPTIONAL, 'The specified fields table.', null],
-        ];
     }
 
     /**
@@ -66,6 +61,19 @@ class MakeModelCommand extends BaseGenerator
     {
         return [
             ['model', InputArgument::REQUIRED, 'Model name'],
+        ];
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['fields', null, InputOption::VALUE_OPTIONAL, 'The specified fields table.', null],
+            ['module', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
         ];
     }
 
