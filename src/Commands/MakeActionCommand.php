@@ -33,9 +33,12 @@ class MakeActionCommand extends BaseGenerator
         $name = Str::of($name);
         $className = $name->studly()->append($modelName);
 
-        $path = Str::of(app_path('Actions/'.$modelName.'/'))
-            ->append('/')
-            ->append($className)
+        if ($this->option('modules') && function_exists('module_path'))
+            $path = Str::of(module_path($modelName).'/Actions/');
+        else
+            $path = Str::of(app_path('Actions/'.$modelName.'/'));
+
+        $path = $path->append($className)
             ->append('.php');
 
         $path = $this->getCompletePath($path);
@@ -73,6 +76,7 @@ class MakeActionCommand extends BaseGenerator
     {
         return [
             ['model', null, InputOption::VALUE_REQUIRED, 'Model name', null],
+            ['modules', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
         ];
     }
 }
