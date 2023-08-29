@@ -30,15 +30,22 @@ class MakeRequestCommand extends BaseGenerator
         $modelName = $this->argument('model');
         $fields = $this->getValidationRules();
 
-        $path = Str::of(app_path('Http/Requests/'.$modelName.'/'))
-            ->append($modelName)
+        if (($module = $this->option('module')) && function_exists('module_path')) {
+            $path = Str::of(module_path($module).'/Http/Requests/');
+            $namespace = "Modules\\{$module}\\Http\\Requests";
+        } else {
+            $path = Str::of(app_path('Http/Requests/'.$modelName.'/'));
+            $namespace = "App\\Http\\Requests\\{$modelName}";
+        }
+
+        $path = $path->append($modelName)
             ->append('Request')
             ->append('.php');
 
         $path = $this->getCompletePath($path);
 
         $contents = $this->getTemplateContents('/request.stub', [
-            'NAMESPACE' => 'App\\Http\\Requests\\'.$modelName,
+            'NAMESPACE' => $namespace,
             'CLASS'     => $modelName.'Request',
             'RULES'     => $fields,
         ]);
@@ -69,6 +76,7 @@ class MakeRequestCommand extends BaseGenerator
     {
         return [
             ['fields', null, InputOption::VALUE_OPTIONAL, 'The specified fields table.', null],
+            ['module', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
         ];
     }
 
