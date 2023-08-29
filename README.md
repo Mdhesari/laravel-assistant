@@ -55,6 +55,14 @@ php artisan assistant:make-model Task
 php artisan assistant:make-request Task
 ```
 
+* Modules
+
+Use modules option in order to add files into their specified module.
+
+```bash
+--modules=true
+```
+
 ### Testing
 
 ```bash
