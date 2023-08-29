@@ -29,8 +29,13 @@ class MakeMigrationCommand extends BaseGenerator
     {
         $modelName = $this->argument('model');
 
-        $path = Str::of(database_path('migrations/'))
-            ->append(date('Y_m_d_His_'))
+        if ($this->option('modules') && function_exists('module_path'))
+            $path = Str::of(module_path($modelName).'/')
+                ->append('Database/Migrations/');
+        else
+            $path = Str::of(database_path('migrations/'));
+
+        $path = $path->append(date('Y_m_d_His_'))
             ->append('create_')
             ->append(Str::of($modelName)->lower()->plural())
             ->append('_table')
@@ -57,6 +62,7 @@ class MakeMigrationCommand extends BaseGenerator
     {
         return [
             ['fields', null, InputOption::VALUE_OPTIONAL, 'The specified fields table.', null],
+            ['modules', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
         ];
     }
 

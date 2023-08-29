@@ -36,30 +36,36 @@ class CrudGeneratorCommand extends BaseGenerator
             $this->input->setOption('model', true);
         }
 
+        $modules = $this->option('modules') ?: false;
+
         if ($this->option('migration')) {
             $this->call('assistant:make-migration', [
-                'model'    => $modelName,
-                '--fields' => $fields,
+                'model'     => $modelName,
+                '--fields'  => $fields,
+                '--modules' => $modules,
             ]);
         }
 
         if ($this->option('requests')) {
             $this->call('assistant:make-request', [
-                'model'    => $modelName,
-                '--fields' => $fields,
+                'model'     => $modelName,
+                '--fields'  => $fields,
+                '--modules' => $modules,
             ]);
         }
 
         if ($this->option('model')) {
             $this->call('assistant:make-model', [
-                'model'    => $modelName,
-                '--fields' => $fields,
+                'model'     => $modelName,
+                '--fields'  => $fields,
+                '--modules' => $modules,
             ]);
         }
 
         if ($this->option('controller')) {
             $this->call('assistant:make-controller', [
-                'model' => $modelName,
+                'model'     => $modelName,
+                '--modules' => $modules,
             ]);
         }
 
@@ -89,6 +95,7 @@ class CrudGeneratorCommand extends BaseGenerator
         return [
             ['all', 'a', InputOption::VALUE_NONE, 'Generate a migration, model, controller, and form request classes for the crud'],
             ['fields', 'fs', InputOption::VALUE_OPTIONAL, 'The specified fields table.', null],
+            ['modules', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
             ['controller', 'c', InputOption::VALUE_NONE, 'Create a new controller for the crud'],
             ['model', 'mo', InputOption::VALUE_NONE, 'Create a new model for the crud'],
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the crud already exists'],
