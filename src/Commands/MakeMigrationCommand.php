@@ -29,8 +29,8 @@ class MakeMigrationCommand extends BaseGenerator
     {
         $modelName = $this->argument('model');
 
-        if ($this->option('modules') && function_exists('module_path'))
-            $path = Str::of(module_path($modelName).'/')
+        if (($module = $this->option('module')) && function_exists('module_path'))
+            $path = Str::of(module_path($module).'/')
                 ->append('Database/Migrations/');
         else
             $path = Str::of(database_path('migrations/'));
@@ -74,7 +74,7 @@ class MakeMigrationCommand extends BaseGenerator
     {
         return [
             ['fields', null, InputOption::VALUE_OPTIONAL, 'The specified fields table.', null],
-            ['modules', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
+            ['module', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
         ];
     }
 }

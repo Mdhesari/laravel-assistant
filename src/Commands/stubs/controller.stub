@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use $MODEL_CLASS$;
 use $MODEL_REQUEST_CLASS$;
-use App\Actions\$MODEL$\Create$MODEL$;
-use App\Actions\$MODEL$\Update$MODEL$;
-use App\Actions\$MODEL$\Delete$MODEL$;
+use $ACTION_CREATE_CLASS$;
+use $ACTION_UPDATE_CLASS$;
+use $ACTION_DELETE_CLASS$;
 use Mdhesari\LaravelQueryFilters\Actions\ApplyQueryFilters;
 
 class $CLASS$ extends Controller

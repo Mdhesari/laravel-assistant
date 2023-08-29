@@ -36,36 +36,40 @@ class CrudGeneratorCommand extends BaseGenerator
             $this->input->setOption('model', true);
         }
 
-        $modules = $this->option('modules') ?: false;
+        $module = $this->option('module');
 
         if ($this->option('migration')) {
+            $this->info('Generating migrations...');
             $this->call('assistant:make-migration', [
-                'model'     => $modelName,
-                '--fields'  => $fields,
-                '--modules' => $modules,
+                'model'    => $modelName,
+                '--fields' => $fields,
+                '--module' => $module,
             ]);
         }
 
         if ($this->option('requests')) {
+            $this->info('Generating request...');
             $this->call('assistant:make-request', [
-                'model'     => $modelName,
-                '--fields'  => $fields,
-                '--modules' => $modules,
+                'model'    => $modelName,
+                '--fields' => $fields,
+                '--module' => $module,
             ]);
         }
 
         if ($this->option('model')) {
+            $this->info('Generating model...');
             $this->call('assistant:make-model', [
-                'model'     => $modelName,
-                '--fields'  => $fields,
-                '--modules' => $modules,
+                'model'    => $modelName,
+                '--fields' => $fields,
+                '--module' => $module,
             ]);
         }
 
         if ($this->option('controller')) {
+            $this->info('Generating controller...');
             $this->call('assistant:make-controller', [
-                'model'     => $modelName,
-                '--modules' => $modules,
+                'model'    => $modelName,
+                '--module' => $module,
             ]);
         }
 
@@ -95,7 +99,7 @@ class CrudGeneratorCommand extends BaseGenerator
         return [
             ['all', 'a', InputOption::VALUE_NONE, 'Generate a migration, model, controller, and form request classes for the crud'],
             ['fields', 'fs', InputOption::VALUE_OPTIONAL, 'The specified fields table.', null],
-            ['modules', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
+            ['module', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
             ['controller', 'c', InputOption::VALUE_NONE, 'Create a new controller for the crud'],
             ['model', 'mo', InputOption::VALUE_NONE, 'Create a new model for the crud'],
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the crud already exists'],

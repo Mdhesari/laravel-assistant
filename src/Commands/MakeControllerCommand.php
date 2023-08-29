@@ -42,25 +42,26 @@ class MakeControllerCommand extends BaseGenerator
 
         $this->makeActions();
 
-        if ($this->option('modules') && function_exists('module_path'))
-            $path = Str::of(module_path($modelName).'/');
-        else
-            $path = Str::of(app_path('/'));
+        $path = $this->getPath();
 
-        $path = $path->append('Http/Controllers/')
-            ->append($modelName)
+        $namespace = $this->getNamespace($path);
+
+        $path = $path->append($modelName)
             ->append('Controller')
             ->append('.php');
 
         $path = $this->getCompletePath($path);
 
         $contents = $this->getTemplateContents('/controller.stub', [
-            'NAMESPACE'           => 'App\\Http\\Controllers',
+            'NAMESPACE'           => $namespace,
             'CLASS'               => $modelName.'Controller',
             'MODEL'               => $modelName,
             'MODEL_REQUEST'       => $request = $modelName.'Request',
-            'MODEL_REQUEST_CLASS' => "App\\Http\\Requests\\{$modelName}\\{$request}",
-            'MODEL_CLASS'         => 'App\\Models\\'.$modelName,
+            'MODEL_REQUEST_CLASS' => $this->getRequestNamespace($request),
+            'MODEL_CLASS'         => $this->getModelNamespace($modelName),
+            'ACTION_CREATE_CLASS' => $this->getActionNamespace('Create'.$modelName),
+            'ACTION_DELETE_CLASS' => $this->getActionNamespace('Delete'.$modelName),
+            'ACTION_UPDATE_CLASS' => $this->getActionNamespace('Update'.$modelName),
         ]);
 
 
@@ -89,7 +90,7 @@ class MakeControllerCommand extends BaseGenerator
     protected function getOptions()
     {
         return [
-            ['modules', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
+            ['module', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
         ];
     }
 
@@ -109,18 +110,26 @@ class MakeControllerCommand extends BaseGenerator
     private function makeAction(string $name)
     {
         $this->call('assistant:make-action', [
-            '--model'   => $this->modelName,
-            '--modules' => $this->option('modules'),
-            'name'      => $name,
+            '--model'  => $this->modelName,
+            '--module' => $this->option('module'),
+            'name'     => $name,
         ]);
     }
 
     private function makeEvent(string $name)
     {
         $this->call('assistant:make-event', [
-            '--model'   => $this->modelName,
-            '--modules' => $this->option('modules'),
-            'name'      => $name,
+            '--model'  => $this->modelName,
+            '--module' => $this->option('module'),
+            'name'     => $name,
         ]);
+    }
+
+    private function getPath(): \Illuminate\Support\Stringable
+    {
+        if (($module = $this->option('module')) && function_exists('module_path'))
+            return Str::of(module_path($module).'/Http/Controllers/');
+
+        return Str::of(app_path('/Http/Controllers/'));
     }
 }

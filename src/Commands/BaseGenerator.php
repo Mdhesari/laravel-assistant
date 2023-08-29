@@ -3,6 +3,7 @@
 namespace Mdhesari\LaravelAssistant\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use Mdhesari\LaravelAssistant\Exceptions\FileAlreadyExistException;
 use Mdhesari\LaravelAssistant\Generators\FileGenerator;
 use Mdhesari\LaravelAssistant\LaravelAssistant;
@@ -119,5 +120,99 @@ abstract class BaseGenerator extends Command
     protected function assistant()
     {
         return app(LaravelAssistant::class);
+    }
+
+    protected function getNamespace(string $namespace): array|string
+    {
+        $namespace = Str::replace('/', '\\', $namespace);
+
+        $projectDirName = explode('/', app_path());
+        $projectDirName = $projectDirName[count($projectDirName) - 2];
+
+        $namespace = substr($namespace, strpos($namespace, $projectDirName) + strlen($projectDirName));
+
+        if ($namespace[0] === '\\') {
+            $namespace = substr($namespace, 1);
+        }
+
+        if ($namespace[strlen($namespace) - 1] === '\\') {
+            $namespace = substr($namespace, 0, strlen($namespace) - 1);
+        }
+
+        return ucfirst($namespace);
+    }
+
+    /**
+     * @param string $modelName
+     * @return string
+     */
+    protected function getModelNamespace(string $modelName): string
+    {
+        try {
+            $namespace = get_class(app($modelName));
+
+//            $namespace = substr($namespace, 0, strpos($namespace, $modelName) - 1);
+        } catch (\Illuminate\Contracts\Container\BindingResolutionException $e) {
+            if ($module = $this->option('module'))
+                $namespace = "Modules\\{$module}\\Entities\\{$modelName}";
+            else
+                $namespace = 'App\\Models\\'.$modelName;
+        }
+
+        return $namespace;
+    }
+
+    /**
+     * @param string $eventName
+     * @return string
+     */
+    protected function getRequestNamespace(string $requestName): string
+    {
+        try {
+            $namespace = get_class(app($requestName));
+        } catch (\Illuminate\Contracts\Container\BindingResolutionException $e) {
+            if ($module = $this->option('module'))
+                $namespace = "Modules\\{$module}\\Http\\Requests\\".$requestName;
+            else
+                $namespace = 'App\\Http\\Requests\\'.$requestName;
+        }
+
+        return $namespace;
+    }
+
+    /**
+     * @param string $actionName
+     * @return string
+     */
+    protected function getActionNamespace(string $actionName): string
+    {
+        try {
+            $namespace = get_class(app($actionName));
+        } catch (\Illuminate\Contracts\Container\BindingResolutionException $e) {
+            if ($module = $this->option('module'))
+                $namespace = "Modules\\{$module}\\Actions\\".$actionName;
+            else
+                $namespace = 'App\\Actions\\'.$actionName;
+        }
+
+        return $namespace;
+    }
+
+    /**
+     * @param string $eventName
+     * @return string
+     */
+    protected function getEventNamespace(string $eventName): string
+    {
+        try {
+            $namespace = get_class(app($eventName));
+        } catch (\Illuminate\Contracts\Container\BindingResolutionException $e) {
+            if ($module = $this->option('module'))
+                $namespace = "Modules\\{$module}\\Events\\".$eventName;
+            else
+                $namespace = 'App\\Events\\'.$eventName;
+        }
+
+        return $namespace;
     }
 }

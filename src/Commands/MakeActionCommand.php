@@ -33,23 +33,28 @@ class MakeActionCommand extends BaseGenerator
         $name = Str::of($name);
         $className = $name->studly()->append($modelName);
 
-        if ($this->option('modules') && function_exists('module_path'))
-            $path = Str::of(module_path($modelName).'/Actions/');
-        else
-            $path = Str::of(app_path('Actions/'.$modelName.'/'));
+        if (($module = $this->option('module')) && function_exists('module_path')) {
+            $path = Str::of($namespace = module_path($module).'/Actions/');
+        } else {
+            $path = Str::of($namespace = app_path('Actions/'.$modelName.'/'));
+        }
+
+        $namespace = $this->getNamespace($namespace);
 
         $path = $path->append($className)
             ->append('.php');
 
         $path = $this->getCompletePath($path);
 
+        $eventName = Str::of($name == 'create' ? 'Created' : 'Updated')->prepend($modelName);
+
         $contents = $this->getTemplateContents("/actions/{$name}-action.stub", [
-            'NAMESPACE'   => 'App\\Actions\\'.$modelName,
+            'NAMESPACE'   => $namespace,
             'CLASS'       => $className,
-            'EVENT'       => $eventName = Str::of($name == 'create' ? 'Created' : 'Updated')->prepend($modelName),
+            'EVENT'       => $eventName,
             'MODEL'       => $modelName,
-            'MODEL_CLASS' => 'App\\Models\\'.$modelName,
-            'EVENT_CLASS' => "App\\Events\\{$modelName}\\{$eventName}",
+            'MODEL_CLASS' => $this->getModelNamespace($modelName),
+            'EVENT_CLASS' => $this->getEventNamespace($eventName),
         ]);
 
         $this->createFile($path, $contents);
@@ -76,7 +81,7 @@ class MakeActionCommand extends BaseGenerator
     {
         return [
             ['model', null, InputOption::VALUE_REQUIRED, 'Model name', null],
-            ['modules', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
+            ['module', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
         ];
     }
 }

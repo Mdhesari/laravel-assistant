@@ -31,12 +31,12 @@ class MakeModelCommand extends BaseGenerator
         $fillable = $this->getFillable();
 
         if (($module = $this->option('module')) && function_exists('module_path')) {
-            $path = Str::of(module_path($module).'/Entities/');
-            $namespace = "Modules\\{$module}\\Entities";
+            $path = Str::of($namespace = module_path($module).'/Entities/');
         } else {
-            $path = Str::of(app_path('Models/'));
-            $namespace = 'App\\Models';
+            $path = Str::of($namespace = app_path('Models/'));
         }
+
+        $namespace = $this->getNamespace($namespace);
 
         $path = $path->append($modelName)
             ->append('.php');

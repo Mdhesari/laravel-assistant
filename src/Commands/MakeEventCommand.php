@@ -33,10 +33,12 @@ class MakeEventCommand extends BaseGenerator
         $name = Str::of($name);
         $class = $name->studly()->prepend($modelName);
 
-        if ($this->option('modules') && function_exists('module_path'))
-            $path = Str::of(module_path($modelName).'/Events/');
+        if (($module = $this->option('module')) && function_exists('module_path'))
+            $path = Str::of(module_path($module).'/Events/');
         else
             $path = Str::of(app_path('Events/'.$modelName.'/'));
+
+        $namespace = $this->getNamespace($path);
 
         $path = $path->append($class)
             ->append('.php');
@@ -44,10 +46,10 @@ class MakeEventCommand extends BaseGenerator
         $path = $this->getCompletePath($path);
 
         $contents = $this->getTemplateContents('/event.stub', [
-            'NAMESPACE'   => 'App\\Events\\'.$modelName,
+            'NAMESPACE'   => $namespace,
             'CLASS'       => $class,
             'MODEL'       => $modelName,
-            'MODEL_CLASS' => 'App\\Models\\'.$modelName,
+            'MODEL_CLASS' => $this->getModelNamespace($modelName),
         ]);
 
         $this->createFile($path, $contents);
@@ -76,7 +78,7 @@ class MakeEventCommand extends BaseGenerator
     {
         return [
             ['model', null, InputOption::VALUE_REQUIRED, 'Model name', null],
-            ['modules', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
+            ['module', null, InputOption::VALUE_OPTIONAL, 'Create for Nwidart-modules.', null],
         ];
     }
 }
